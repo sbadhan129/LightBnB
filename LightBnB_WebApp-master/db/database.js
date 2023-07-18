@@ -58,7 +58,7 @@ const { name, email, password } = user;
 return pool
 .query(`INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING*`, [ name, email, password ])
 .then((result) => {
-  console.log(result.rows);
+// console.log(result.rows);
 return result.rows[0];
 })
 .catch((err) => {
@@ -78,14 +78,14 @@ const getAllReservations = function (guest_id, limit = 10) {
  FROM reservations
  JOIN properties ON reservations.property_id = properties.id
  JOIN property_reviews ON properties.id = property_reviews.property_id
- WHERE reservations.guest_id = 1
+ WHERE reservations.guest_id = $1
  GROUP BY properties.id, reservations.id
  ORDER BY reservations.start_date
- LIMIT 2;`;
+ LIMIT $2;`;
  return pool
  .query(query, [guest_id, limit])
  .then((result) => {
-   console.log(result.rows);
+  // console.log(result.rows);
  return result.rows;
  })
  .catch((err) => {
@@ -106,7 +106,7 @@ const getAllProperties = (options, limit = 10) => {
  return pool
     .query(`SELECT * FROM properties LIMIT $1`, [limit])
     .then((result) => {
-      console.log(result.rows);
+     // console.log(result.rows);
     return result.rows;
     })
     .catch((err) => {
